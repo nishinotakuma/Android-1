@@ -15,16 +15,36 @@
         app:title="趣味"
         app:titleTextColor="#ffffff" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/select_hobby_recycler"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/config_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="設定"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/select_hobby_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/config_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:alpha="60"
+                android:background="#5aaaaaaa"
+                android:text="設定"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

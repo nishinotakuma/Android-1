@@ -47,7 +47,9 @@ public class HobbySelectionActivity extends AppCompatActivity {
             }
         });
 
-        // recyclerview
+        // recyclerView
+        // RecyclerViewの基本
+        // https://qiita.com/naoi/items/f8a19d6278147e98bbc2
         final RecyclerView recyclerView = findViewById(R.id.select_hobby_recycler);
         List<String> dataSet = getDataSet();
         HobbySelectionRecyclerViewAdapter adapter = new HobbySelectionRecyclerViewAdapter(dataSet);
@@ -83,6 +85,7 @@ public class HobbySelectionActivity extends AppCompatActivity {
         });
     }
 
+    // 戻るボタン押した時
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -107,13 +110,19 @@ public class HobbySelectionActivity extends AppCompatActivity {
         dataSet.add("勉強");
         dataSet.add("散歩");
         dataSet.add("買い物");
+        dataSet.add("リクルート");
+        dataSet.add("ゼクシイ");
+        dataSet.add("マッチング");
+        dataSet.add("水");
+        dataSet.add("枕");
         return dataSet;
     }
 
 
 
 
-    // recyclerview周り
+    // recyclerView
+    // refs: https://qiita.com/naoi/items/f8a19d6278147e98bbc2
     public class HobbySelectionRecyclerViewAdapter extends RecyclerView.Adapter<HobbySelectionViewHolder>{
 
         private List<String> hobbyList;

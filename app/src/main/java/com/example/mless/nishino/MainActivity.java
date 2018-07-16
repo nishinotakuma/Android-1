@@ -24,15 +24,35 @@ import java.util.regex.Pattern;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> mHobby = new ArrayList<>();
+    private boolean isCheckedAgreement = false;
+//    private int selectedSexId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // TODO: 回転対応
         // refs: https://qiita.com/kobakei/items/5f38339dd6528fdc6b5d
 
+        // savedInstanceStateについて
+        // https://qiita.com/yyyske/items/c6e342a9008bebef75bd
+        if (savedInstanceState != null) {
+            mHobby = savedInstanceState.getStringArrayList("mHobby");
+            isCheckedAgreement = savedInstanceState.getBoolean("isCheckedAgreement");
+//            selectedSexId = savedInstanceState.getInt("selectedSexId");
+        }
+
+        // 性別
+        // refs: http://www.adakoda.com/android/000067.html
+//        RadioGroup radioGroup = findViewById(R.id.sex_radio);
+//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                selectedSexId = checkedId;
+//            }
+//        });
 
         //趣味周り
         setHobbyView(mHobby);
@@ -72,13 +92,24 @@ public class MainActivity extends AppCompatActivity {
         // ボタンの無・有効化
         final Button doneButton = findViewById(R.id.done_button);
         final CheckBox checkBox = findViewById(R.id.checkBox);
+
+        if (isCheckedAgreement) {
+            doneButton.setBackgroundColor(Color.parseColor("#FFFF8800"));
+            doneButton.setEnabled(true);
+        }else{
+            doneButton.setBackgroundColor(Color.parseColor("#FFAAAAAA"));
+            doneButton.setEnabled(false);
+        }
+
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(checkBox.isChecked()){
+                    isCheckedAgreement = true;
                     doneButton.setBackgroundColor(Color.parseColor("#FFFF8800"));
                     doneButton.setEnabled(true);
                 }else{
+                    isCheckedAgreement = false;
                     doneButton.setBackgroundColor(Color.parseColor("#FFAAAAAA"));
                     doneButton.setEnabled(false);
                 }
@@ -156,6 +187,14 @@ public class MainActivity extends AppCompatActivity {
             mHobby = data.getStringArrayListExtra("hobby");
             setHobbyView(mHobby);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("mHobby", mHobby);
+        outState.putBoolean("isCheckedAgreement", isCheckedAgreement);
+//        outState.putInt("selectedSexId", selectedSexId);
     }
 
 
