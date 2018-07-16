@@ -26,8 +26,6 @@ import java.util.List;
 
 public class HobbySelectionActivity extends AppCompatActivity {
 
-    // 設定ボタンを押さない限り登録されない仕様
-
     private ArrayList<String> mSelectedHobby = new ArrayList<>();
 
     @Override

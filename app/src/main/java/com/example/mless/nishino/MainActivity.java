@@ -2,6 +2,7 @@ package com.example.mless.nishino;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: データを保存して次に使えるように？？
+        // TODO: 回転対応
+        // refs: https://qiita.com/kobakei/items/5f38339dd6528fdc6b5d
 
 
         //趣味周り
@@ -44,15 +46,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        //spinnerをプログラム側で処理
-//        Spinner work_spinner = findViewById(R.id.work_spinner);
-//        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
-//        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerAdapter.add("item1");
-//        spinnerAdapter.add("item0");
-//        work_spinner.setAdapter(spinnerAdapter);
+        // 職業(spinner)
+        // refs: http://y-anz-m.blogspot.com/2014/04/androidspinnerxml.html
+        // res/string.xml
 
-        // 利用規約周りの処理
+
+        // 利用規約
         final TextView rule_text = findViewById(R.id.rule_text);
         final Pattern rule_pattern = Pattern.compile("利用規約");
         final String url_string = "https://google.com";
@@ -77,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(checkBox.isChecked()){
+                    doneButton.setBackgroundColor(Color.parseColor("#FFFF8800"));
                     doneButton.setEnabled(true);
                 }else{
+                    doneButton.setBackgroundColor(Color.parseColor("#FFAAAAAA"));
                     doneButton.setEnabled(false);
                 }
             }
@@ -96,20 +97,19 @@ public class MainActivity extends AppCompatActivity {
 
         // フォームの全ての入力値を取得
         SerializableFormValues formValues = getValuesFromForm();
-
-
-        if(formValues.surName.equals("")/*名前が入っていない場合*/ || formValues.firstName.equals("")){
+        // 氏名が無い場合
+        if(formValues.surName.equals("") || formValues.firstName.equals("")){
+            // AlertDialog
+            // refs: https://qiita.com/suzukihr/items/8973527ebb8bb35f6bb8
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("氏名が入力されていません")
-                    //.setMessage("Are you sure you want to delete this entry?")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-
                         }
                     })
                     .show();
         }else{
-            // 別のactivityにデータを送る
+            // ConfirmationActivityにデータを送る
             Intent confirmationIntent = new Intent(MainActivity.this, ConfirmationActivity.class);
             confirmationIntent.putExtra("formValues", formValues);
 
@@ -161,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setHobbyView(List<String> hobby){
         TextView hobbyText = findViewById(R.id.hobby_view);
+        // StringBuilder
+        // refs: https://www.sejuku.net/blog/14982
         StringBuilder tmp = new StringBuilder();
         tmp.append("");
         // アプリ起動時はlength==0のオブジェクトを渡す
