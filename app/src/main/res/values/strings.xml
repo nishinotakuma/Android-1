@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">nishino</string>
+
+    <string-array name="spinner">
+        <item>魔法使い</item>
+        <item>僧侶</item>
+        <item>戦士</item>
+        <item>勇者</item>
+        <item>遊び人</item>
+    </string-array>
+</resources>
