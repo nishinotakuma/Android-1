@@ -173,6 +173,8 @@ public class HobbySelectionActivity extends AppCompatActivity {
             checkBox = itemView.findViewById(R.id.checkBox_hobbyItems);
         }
     }
+
+    // 行間に線を入れる
     public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
         private final int[] ATTRS = new int[]{
