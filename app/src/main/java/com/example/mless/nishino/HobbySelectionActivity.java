@@ -123,10 +123,13 @@ public class HobbySelectionActivity extends AppCompatActivity {
 
     // recyclerView
     // refs: https://qiita.com/naoi/items/f8a19d6278147e98bbc2
+    // innerクラスにするならstaticにしないとこのクラスがエンクロージングクラスの参照を持ってしまいます。
+    // 個人的にはinnerクラスではなくAdapterはActivityの中に書くのではなくて別クラスに切り出した方が見通しがよくなると思ってます
     public class HobbySelectionRecyclerViewAdapter extends RecyclerView.Adapter<HobbySelectionViewHolder>{
 
         private List<String> hobbyList;
 
+        // publicではなくpackageprivateでいいと思います
         public HobbySelectionRecyclerViewAdapter(List<String> list) {
             hobbyList = list;
         }
@@ -135,6 +138,7 @@ public class HobbySelectionActivity extends AppCompatActivity {
         @Override
         public HobbySelectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.hobby_items, parent,false);
+            // return new HobbySelectionViewHolder(inflate);
             HobbySelectionViewHolder vh = new HobbySelectionViewHolder(inflate);
             return vh;
         }
