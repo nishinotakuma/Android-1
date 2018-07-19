@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <!-- このLinerLayoutいらないです -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -81,6 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="63dp">
 
+                <!-- 制約がないというエラーが出てます -->
                 <RadioGroup
                     android:id="@+id/sex_radio"
                     android:layout_width="wrap_content"
@@ -124,6 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="61dp">
 
+                <!-- 制約がないというエラーがでてます -->
                 <EditText
                     android:id="@+id/phone_input"
                     android:layout_width="228dp"

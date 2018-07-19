@@ -93,10 +93,15 @@ public class MainActivity extends AppCompatActivity {
         final Button doneButton = findViewById(R.id.done_button);
         final CheckBox checkBox = findViewById(R.id.checkBox);
 
+        // checkboxは内部的にsavedinstanceを実装していたような気がするので、viewからフラグを常に取得するようにすれば
+        // このフラグを管理する必要がなくなるかなと思います。(違ったらすいません)
+        // onCreateでviewのインスタンスを取得→フィールドに退避させて、チェックされてるかのフラグが欲しいときは
+        // そこからisChecked()で取得するってイメージ
         if (isCheckedAgreement) {
+            // enable/disableの状態によって背景をかえるのではなくて、selectorを使ってください。（後述）
             doneButton.setBackgroundColor(Color.parseColor("#FFFF8800"));
             doneButton.setEnabled(true);
-        }else{
+        } else {
             doneButton.setBackgroundColor(Color.parseColor("#FFAAAAAA"));
             doneButton.setEnabled(false);
         }
@@ -104,11 +109,28 @@ public class MainActivity extends AppCompatActivity {
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkBox.isChecked()){
+                // クリックするたびにenable/disableを切り替えたいなら
+                // doneButton.setEnable(checkBox.isChecked());
+                // でいいのでは？
+
+                //　あとcheckboxはCompoundButtonを継承していて、OnCheckedChangeListener#onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                //　が使えるので以下のような形が良いかと思います
+                // checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                //            @Override
+                //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //                doneButton.setEnabled(checkBox.isChecked());
+                //            }
+                //        });
+
+                //　enable/disableの状態によってボタンの背景とか変えたいならselectorリソースを定義してそれをbuttonのbackgroundに指定すれば
+                //　コードでsetBackgroundしなくてもAndroidライブラリが自動で切り替えてくれます
+                // refs: https://developer.android.com/guide/topics/resources/color-list-resource
+                // https://inon29.hateblo.jp/entry/2014/01/13/184153
+                if (checkBox.isChecked()) {
                     isCheckedAgreement = true;
                     doneButton.setBackgroundColor(Color.parseColor("#FFFF8800"));
                     doneButton.setEnabled(true);
-                }else{
+                } else {
                     isCheckedAgreement = false;
                     doneButton.setBackgroundColor(Color.parseColor("#FFAAAAAA"));
                     doneButton.setEnabled(false);
@@ -136,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
             builder.setTitle("氏名が入力されていません")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            // dismissがないです
+                            // if (dialog != null) {
+                            // dialog.dismiss();
+                            // }
                         }
                     })
                     .show();
@@ -183,7 +209,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == 0){
+        // AppCompatActivity#RESULT_OKもチェックしてください
+        if (resultCode == 0) {
+            //こういうkeyとかはベタがきしないで定数で定義したほうが良いと思います
             mHobby = data.getStringArrayListExtra("hobby");
             setHobbyView(mHobby);
         }
@@ -198,7 +226,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setHobbyView(List<String> hobby){
+    private void setHobbyView(List<String> hobby) {
+
+        // 空の場合は早期リターンすればネストが一個無くなります
+        // if (hobby.size() == 0) {
+        //    return;
+        // }
         TextView hobbyText = findViewById(R.id.hobby_view);
         // StringBuilder
         // refs: https://www.sejuku.net/blog/14982
